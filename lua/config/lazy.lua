@@ -299,7 +299,37 @@ require("lazy").setup(
     command = {"AocGetPuzzleInput", "AocGetTodayPuzzleInput"},
     opts = {session_filepath = "C:\\Users\\Macch\\AppData\\Local\\nvim-data\\aoc\\aoc.nvim\\lua\\aoc\\key.txt"}
 },
-
+{
+  'stevearc/oil.nvim',
+  ---@module 'oil'
+  ---@type oil.SetupOpts
+  opts = {
+    keymaps = {
+      ["g?"] = { "actions.show_help", mode = "n" },
+      ["<CR>"] = "actions.select",
+      ["<C-s>"] = { "actions.select", opts = { vertical = true } },
+      ["<C-h>"] = { "actions.select", opts = { horizontal = true } },
+      ["<C-t>"] = { "actions.select", opts = { tab = true } },
+      ["<C-p>"] = "actions.preview",
+      ["<C-c>"] = { "actions.close", mode = "n" },
+      ["<C-l>"] = "actions.refresh",
+      ["-"] = { "actions.parent", mode = "n" },
+      ["_"] = { "actions.open_cwd", mode = "n" },
+      ["`"] = { "actions.cd", mode = "n" },
+      ["g~"] = { "actions.cd", opts = { scope = "tab" }, mode = "n" },
+      ["gs"] = { "actions.change_sort", mode = "n" },
+      ["gx"] = "actions.open_external",
+      ["g."] = { "actions.toggle_hidden", mode = "n" },
+      ["g\\"] = { "actions.toggle_trash", mode = "n" },
+    },
+    use_default_keymaps = false
+  },
+  -- Optional dependencies
+  -- dependencies = { { "nvim-mini/mini.icons", opts = {} } },
+  dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if you prefer nvim-web-devicons
+  -- Lazy loading is not recommended because it is very tricky to make it work correctly in all situations.
+  lazy = false,
+},
 
 
 
@@ -322,39 +352,12 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
-vim.api.nvim_create_autocmd("VimEnter", {
-  callback = function()
-    vim.opt.tabstop = 8
-    vim.opt.expandtab = false
-  end,
-})
-
-vim.api.nvim_create_autocmd("BufEnter", {
-  callback = function()
-    vim.opt.tabstop = 8
-    vim.opt.expandtab = false
-  end,
-})
-
-vim.api.nvim_create_autocmd("OptionSet", {
-  pattern = "tabstop",
-  callback = function()
-    vim.opt.tabstop = 8
-  end,
-})
-
-vim.api.nvim_create_autocmd("OptionSet", {
-  pattern = "expandtab",
-  callback = function()
-    vim.opt.expandtab = false
-  end,
-})
-
 vim.cmd("colorscheme onedark")
 
-
+vim.keymap.set("n", "<leader>v", ":vs<cr>", {noremap = true, silent = true,}) -- vertical split
+vim.keymap.set("n", "<leader>o", ":Oil .<cr>", {noremap = true, silent = true,}) -- open file explorer
 vim.keymap.set("n", "<leader>e", ":term<cr>", {noremap = true, silent = true,}) -- open a terminal: switch is <C-^>
-vim.keymap.set("n", "<leader>r", ":b term://<cr>", {noremap = true, silent = true})
+vim.keymap.set("n", "<leader>r", ":b term://", {noremap = true, silent = true})
 vim.keymap.set("n", "<leader>q", ":bdelete term://<cr>", {noremap = true, silent = true})
 vim.keymap.set("n", "<leader>a", ":ascii<cr>", {noremap = true, silent = true}) -- ascii value of cursor
 vim.keymap.set("t", "<C-i>", "<C-\\><C-N><C-6>", {noremap = true, silent = true})
