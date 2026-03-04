@@ -357,7 +357,7 @@ vim.cmd("colorscheme onedark")
 vim.keymap.set("n", "<leader>v", ":vs<cr>", {noremap = true, silent = true,}) -- vertical split
 vim.keymap.set("n", "<leader>o", ":Oil .<cr>", {noremap = true, silent = true,}) -- open file explorer
 vim.keymap.set("n", "<leader>e", ":term<cr>", {noremap = true, silent = true,}) -- open a terminal: switch is <C-^>
-vim.keymap.set("n", "<leader>r", ":b term://", {noremap = true, silent = true})
-vim.keymap.set("n", "<leader>q", ":bdelete term://<cr>", {noremap = true, silent = true})
+vim.keymap.set("n", "<leader>r", ":b term://<cr>", {noremap = true, silent = true})
+vim.keymap.set("n", "<leader>q", ":bdelete term://", {noremap = true, silent = true})
 vim.keymap.set("n", "<leader>a", ":ascii<cr>", {noremap = true, silent = true}) -- ascii value of cursor
 vim.keymap.set("t", "<C-i>", "<C-\\><C-N><C-6>", {noremap = true, silent = true})
