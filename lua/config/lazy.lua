@@ -62,7 +62,7 @@ require("lazy").setup(
     })
   end
 },
-{ "nvim-tree/nvim-web-devicons", opts = {} },
+{ "nvim-tree/nvim-web-devicons", lazy = true, opts = {} },
 {
   "nvimdev/dashboard-nvim",
   event = "VimEnter",
@@ -130,7 +130,12 @@ require("lazy").setup(
       build = ":TSUpdate",
       lazy = false,
       opts = {
-        -- ... your treesitter options
+        indent = {
+          enable = true,
+        },
+        highlight = {
+          enable = true,
+        },
       },
       config = function(_, opts)
         require("nvim-treesitter.configs").setup(opts)
@@ -300,6 +305,7 @@ require("lazy").setup(
     dir = "C:\\Users\\Macch\\AppData\\Local\\nvim-data\\aoc\\aoc.nvim",
     dependencies = { "nvim-lua/plenary.nvim" },
     command = {"AocGetPuzzleInput", "AocGetTodayPuzzleInput"},
+    lazy = true,
     opts = {session_filepath = "C:\\Users\\Macch\\AppData\\Local\\nvim-data\\aoc\\aoc.nvim\\lua\\aoc\\key.txt"}
 },
 {
@@ -331,7 +337,6 @@ require("lazy").setup(
   -- dependencies = { { "nvim-mini/mini.icons", opts = {} } },
   dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if you prefer nvim-web-devicons
   -- Lazy loading is not recommended because it is very tricky to make it work correctly in all situations.
-  lazy = false,
 },
 
 
@@ -344,15 +349,26 @@ require("lazy").setup(
 }
 )
 
-require 'nvim-treesitter.configs'.setup {
-  highlight = {
-    enable = true, -- enable syntax highlighting
-  }
-}
+ignore = {'dashboard', 'TelescopePrompt', 'TelescopeResults'}
+
 vim.api.nvim_create_autocmd("FileType", {
   callback = function()
-    vim.opt_local.formatoptions:remove("r")
-  end,
+  file = vim.bo.filetype
+    for index, name in ipairs(ignore) do
+      if(name == file) then
+        return
+      end
+    end
+    vim.opt.formatoptions:remove("r")
+    vim.opt.formatoptions:remove("o")
+    vim.opt.formatoptions:remove("c")
+    vim.treesitter.start()
+    vim.opt.foldlevel = 9
+    vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+    vim.wo.foldmethod = 'expr'
+    -- vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()" idk man this breaks it
+  
+  end
 })
 
 vim.cmd("colorscheme onedark")
@@ -361,7 +377,7 @@ vim.keymap.set("n", "<leader>v", ":vs<cr>", {noremap = true, silent = true,}) --
 vim.keymap.set("n", "<leader>o", ":Oil .<cr>", {noremap = true, silent = true,}) -- open file explorer
 vim.keymap.set("n", "<leader>e", ":term<cr>", {noremap = true, silent = true,}) -- open a terminal: switch is <C-^>
 vim.keymap.set("n", "<leader>r", ":b term://<cr>", {noremap = true, silent = true})
-vim.keymap.set("n", "<leader>q", ":bdelete term://", {noremap = true, silent = true})
+vim.keymap.set("n", "<leader>q", ":bdelete! term://<Tab><Tab><cr>", {noremap = true, silent = true})
 vim.keymap.set("n", "<leader>a", ":ascii<cr>", {noremap = true, silent = true}) -- ascii value of cursor
 vim.keymap.set("t", "<C-i>", "<C-\\><C-N><C-6>", {noremap = true, silent = true})
 

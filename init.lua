@@ -1,8 +1,7 @@
 require("config.lazy")
 vim.o.shell = "C:\\msys64\\usr\\bin\\bash.exe"
--- vim.wo.number = true
-vim.opt.autoindent = true
-vim.opt.smartindent = true
+-- vim.opt.autoindent = true
+-- vim.opt.smartindent = true these conflict with treesitter
 vim.opt.autochdir = true
 vim.o.number = true
 vim.o.shellxquote = ""
