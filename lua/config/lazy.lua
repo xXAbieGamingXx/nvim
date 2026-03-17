@@ -349,27 +349,19 @@ require("lazy").setup(
 }
 )
 
-files = {'c', 'cpp', 'java', 'python', 'meson', 'bash', 'glsl'}
-found = false
 vim.api.nvim_create_autocmd("FileType", {
-  callback = function()
-  file = vim.bo.filetype
-    for index, name in ipairs(files) do
-      if(name == file) then
-        found = true
-        break
-      end
-    end
-    if(found) then
-      vim.opt.formatoptions:remove("r")
-      vim.opt.formatoptions:remove("o")
-      vim.opt.formatoptions:remove("c")
-      vim.treesitter.start()
+  pattern = '*',
+  callback = function(args)
+    local lang = vim.treesitter.language.get_lang(vim.bo[args.buf].filetype)
+    if lang then pcall(vim.treesitter.start, args.buf)
       vim.opt.foldlevel = 9
       vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
       vim.wo.foldmethod = 'expr'
       -- vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()" idk man this breaks it
     end
+    vim.opt.formatoptions:remove("r")
+    vim.opt.formatoptions:remove("o")
+    vim.opt.formatoptions:remove("c")
   end
 })
 
