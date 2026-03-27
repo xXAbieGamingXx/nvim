@@ -338,6 +338,60 @@ require("lazy").setup(
   dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if you prefer nvim-web-devicons
   -- Lazy loading is not recommended because it is very tricky to make it work correctly in all situations.
 },
+{
+  "carlos-algms/agentic.nvim",
+  opts = {
+    -- Any ACP-compatible provider works. Built-in: "claude-agent-acp" | "gemini-acp" | "codex-acp" | "opencode-acp" | "cursor-acp" | "copilot-acp" | "auggie-acp" | "mistral-vibe-acp" | "cline-acp" | "goose-acp"
+    provider = "claude-agent-acp",
+  },
+
+  -- these are just suggested keymaps; customize as desired
+  keys = {
+    {
+      "<C-\\>",
+      function() require("agentic").toggle() end,
+      mode = { "n", "v", "i" },
+      desc = "Toggle Agentic Chat"
+    },
+    {
+      "<C-'>",
+      function() require("agentic").add_selection_or_file_to_context() end,
+      mode = { "n", "v" },
+      desc = "Add file or selection to Agentic to Context"
+    },
+    {
+      "<leader>an",
+      function() require("agentic").new_session() end,
+      mode = { "n", "v", "i" },
+      desc = "New Agentic Session"
+    },
+    {
+      "<A-i>r", -- ai Restore
+      function()
+          require("agentic").restore_session()
+      end,
+      desc = "Agentic Restore session",
+      silent = true,
+      mode = { "n", "v", "i" },
+    },
+    {
+      "<leader>ad", -- ai Diagnostics
+      function()
+          require("agentic").add_current_line_diagnostics()
+      end,
+      desc = "Add current line diagnostic to Agentic",
+      mode = { "n" },
+    },
+    {
+      "<leader>aD", -- ai all Diagnostics
+      function()
+          require("agentic").add_buffer_diagnostics()
+      end,
+      desc = "Add all buffer diagnostics to Agentic",
+      mode = { "n" },
+    },
+  },
+},
 
 
 
@@ -369,14 +423,78 @@ vim.cmd("colorscheme onedark")
 
 vim.keymap.set("n", "<leader>v", ":vs<cr>", {noremap = true, silent = true,}) -- vertical split
 vim.keymap.set("n", "<leader>o", ":Oil .<cr>", {noremap = true, silent = true,}) -- open file explorer
-vim.keymap.set("n", "<leader>e", ":term<cr>", {noremap = true, silent = true,}) -- open a terminal: switch is <C-^>
-vim.keymap.set("n", "<leader>r", ":b term://<cr>", {noremap = true, silent = true})
-vim.keymap.set("n", "<leader>q", ":bdelete! term://<Tab><Tab><cr>", {noremap = true, silent = true})
-vim.keymap.set("n", "<leader>a", ":ascii<cr>", {noremap = true, silent = true}) -- ascii value of cursor
+-- vim.keymap.set("n", "<leader>e", ":term<cr>", {noremap = true, silent = true,}) -- open a terminal: switch is <C-^>
+-- vim.keymap.set("n", "<leader>q", ":bdelete! term://<Tab><Tab><cr>", {noremap = true, silent = true})
 vim.keymap.set("t", "<C-i>", "<C-\\><C-N><C-6>", {noremap = true, silent = true})
+vim.keymap.set("t", "<C-n>", "<C-\\><C-N>", {noremap = true, silent = true})
 
 local builtin = require('telescope.builtin')
 vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = 'Telescope find files' })
 vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = 'Telescope live grep' })
 vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = 'Telescope buffers' })
 vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Telescope help tags' })
+
+
+local terms = {}
+local index = 0
+
+vim.keymap.set('n', '<leader>e', function()
+	if index < 10 then
+		vim.cmd("term")
+		terms[index] = vim.api.nvim_buf_get_name(0)
+
+		index = index + 1
+	end
+end, {noremap = true, silent = true})
+
+vim.keymap.set("n", "<leader>r", function()
+	if index >= 1 then
+		vim.cmd("b! "..terms[0])
+	end
+end, {noremap = true, silent = true})
+
+vim.keymap.set("n", "<leader>w1", function()
+	if index >= 1 then
+		vim.cmd("b! "..terms[0])
+	end
+end, {noremap = true, silent = true})
+vim.keymap.set("n", "<leader>w2", function()
+	if index >= 2 then
+		vim.cmd("b! "..terms[1])
+	end
+end, {noremap = true, silent = true})
+vim.keymap.set("n", "<leader>w3", function()
+	if index >= 3 then
+		vim.cmd("b! "..terms[2])
+	end
+end, {noremap = true, silent = true})
+vim.keymap.set("n", "<leader>w4", function()
+	if index >= 4 then
+		vim.cmd("b! "..terms[3])
+	end
+end, {noremap = true, silent = true})
+vim.keymap.set("n", "<leader>w5", function()
+	if index >= 5 then
+		vim.cmd("b! "..terms[4])
+	end
+end, {noremap = true, silent = true})
+vim.keymap.set("n", "<leader>w6", function()
+	if index >= 6 then
+		vim.cmd("b! "..terms[5])
+	end
+end, {noremap = true, silent = true})
+vim.keymap.set("n", "<leader>w7", function()
+	if index >= 7 then
+		vim.cmd("b! "..terms[6])
+	end
+end, {noremap = true, silent = true})
+vim.keymap.set("n", "<leader>w8", function()
+	if index >= 8 then
+		vim.cmd("b! "..terms[7])
+	end
+end, {noremap = true, silent = true})
+vim.keymap.set("n", "<leader>w9", function()
+	if index >= 9 then
+		vim.cmd("b! "..terms[8])
+	end
+end, {noremap = true, silent = true})

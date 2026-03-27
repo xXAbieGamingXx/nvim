@@ -1,5 +1,6 @@
 {
   "Fknotes.nvim": { "branch": "main", "commit": "83c1b79df216461f89bbf2d274b12116a83b6a3c" },
+  "agentic.nvim": { "branch": "main", "commit": "cfa49d9dc3d9712ed10a963706caa55cc0eb62aa" },
   "cellular-automaton.nvim": { "branch": "main", "commit": "1606e9d5d04ff254023c3f3c62842d065708d6d3" },
   "dashboard-nvim": { "branch": "master", "commit": "0775e567b6c0be96d01a61795f7b64c1758262f6" },
   "lazy.nvim": { "branch": "main", "commit": "306a05526ada86a7b30af95c5cc81ffba93fef97" },
