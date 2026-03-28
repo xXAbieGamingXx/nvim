@@ -340,6 +340,7 @@ require("lazy").setup(
 },
 {
   "carlos-algms/agentic.nvim",
+  lazy = true,
   opts = {
     -- Any ACP-compatible provider works. Built-in: "claude-agent-acp" | "gemini-acp" | "codex-acp" | "opencode-acp" | "cursor-acp" | "copilot-acp" | "auggie-acp" | "mistral-vibe-acp" | "cline-acp" | "goose-acp"
     provider = "claude-agent-acp",
@@ -362,7 +363,7 @@ require("lazy").setup(
     {
       "<leader>an",
       function() require("agentic").new_session() end,
-      mode = { "n", "v", "i" },
+      mode = { "n" },
       desc = "New Agentic Session"
     },
     {
@@ -423,8 +424,6 @@ vim.cmd("colorscheme onedark")
 
 vim.keymap.set("n", "<leader>v", ":vs<cr>", {noremap = true, silent = true,}) -- vertical split
 vim.keymap.set("n", "<leader>o", ":Oil .<cr>", {noremap = true, silent = true,}) -- open file explorer
--- vim.keymap.set("n", "<leader>e", ":term<cr>", {noremap = true, silent = true,}) -- open a terminal: switch is <C-^>
--- vim.keymap.set("n", "<leader>q", ":bdelete! term://<Tab><Tab><cr>", {noremap = true, silent = true})
 vim.keymap.set("t", "<C-i>", "<C-\\><C-N><C-6>", {noremap = true, silent = true})
 vim.keymap.set("t", "<C-n>", "<C-\\><C-N>", {noremap = true, silent = true})
 
