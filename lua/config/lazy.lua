@@ -340,10 +340,14 @@ require("lazy").setup(
 },
 {
   "carlos-algms/agentic.nvim",
-  lazy = true,
   opts = {
     -- Any ACP-compatible provider works. Built-in: "claude-agent-acp" | "gemini-acp" | "codex-acp" | "opencode-acp" | "cursor-acp" | "copilot-acp" | "auggie-acp" | "mistral-vibe-acp" | "cline-acp" | "goose-acp"
-    provider = "claude-agent-acp",
+    provider = "copilot-acp",
+    acp_providers = {
+      ["copilot-acp"] = {
+        command = "copilot.cmd"
+      },
+    },
   },
 
   -- these are just suggested keymaps; customize as desired
@@ -355,7 +359,7 @@ require("lazy").setup(
       desc = "Toggle Agentic Chat"
     },
     {
-      "<C-'>",
+      "<leader>af",
       function() require("agentic").add_selection_or_file_to_context() end,
       mode = { "n", "v" },
       desc = "Add file or selection to Agentic to Context"
