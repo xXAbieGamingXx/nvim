@@ -55,6 +55,7 @@ require("lazy").setup(
   {
   {
   'flashcodes-themayankjha/Fknotes.nvim',
+
   dependencies = { "MunifTanjim/nui.nvim" },
   config = function()
     require('fknotes').setup({
@@ -119,6 +120,7 @@ require("lazy").setup(
 },
 {
   'nvim-telescope/telescope.nvim',
+  cmd = "Telescope",
   dependencies = {
         'nvim-lua/plenary.nvim',
         { 'nvim-telescope/telescope-fzf-native.nvim', build = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release --target install' }
@@ -191,21 +193,19 @@ require("lazy").setup(
     -- use opts = {} for passing setup options
     -- this is equivalent to setup({}) function
 },
-{
-  "folke/todo-comments.nvim",
-  dependencies = { "nvim-lua/plenary.nvim" },
-  event = "BufEnter",
-  opts = {
-    -- your configuration comes here
-    -- or leave it empty to use the default settings
-    -- refer to the configuration section below
-  }
-},
+-- {
+--   "folke/todo-comments.nvim",
+--   dependencies = { "nvim-lua/plenary.nvim" },
+--   event = "BufEnter",
+--   opts = {
+--     -- your configuration comes here
+--     -- or leave it empty to use the default settings
+--     -- refer to the configuration section below
+--   }
+-- },
 {
   "mfussenegger/nvim-dap",
-  lazy = true,
-  -- Copied from LazyVim/lua/lazyvim/plugins/extras/dap/core.lua and
-  -- modified.
+  event = "VeryLazy",
   config = function()
     dap = require("dap")
     dap.adapters.gdb = {
@@ -271,6 +271,7 @@ require("lazy").setup(
 },
 {
   "theHamsta/nvim-dap-virtual-text",
+  ft = {"c", "cpp"},
   config = true,
   dependencies = {
     "mfussenegger/nvim-dap",
@@ -278,6 +279,7 @@ require("lazy").setup(
 },
 {
   "rcarriga/nvim-dap-ui",
+  ft = {"c", "cpp"},
   config = true,
   keys = {
     {
@@ -305,13 +307,13 @@ require("lazy").setup(
     dir = "C:\\Users\\Macch\\AppData\\Local\\nvim-data\\aoc\\aoc.nvim",
     dependencies = { "nvim-lua/plenary.nvim" },
     command = {"AocGetPuzzleInput", "AocGetTodayPuzzleInput"},
-    lazy = true,
     opts = {session_filepath = "C:\\Users\\Macch\\AppData\\Local\\nvim-data\\aoc\\aoc.nvim\\lua\\aoc\\key.txt"}
 },
 {
   'stevearc/oil.nvim',
   ---@module 'oil'
   ---@type oil.SetupOpts
+  cmd = "Oil",
   opts = {
     keymaps = {
       ["g?"] = { "actions.show_help", mode = "n" },

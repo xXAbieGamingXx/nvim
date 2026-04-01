@@ -6,6 +6,20 @@ vim.opt.autochdir = true
 vim.o.number = true
 vim.o.shellxquote = ""
 vim.o.shellcmdflag = "--login -c"
+
+
+
+-- uneeded builtin features to speed up load time
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
+vim.g.loaded_matchit = 1
+vim.g.loaded_matchparen = 1
+
+vim.g.loaded_tarPlugin = 1
+vim.g.loaded_zipPlugin = 1
+vim.g.loaded_tohtml = 1
+vim.g.loaded_tutor_mode_plugin = 1
 -- local Config = require("lazy.core.config")
 -- local Util = require("lazy.core.util")
 
