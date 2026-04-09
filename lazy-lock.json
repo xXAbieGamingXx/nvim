@@ -22,6 +22,7 @@
   "telescope-fzf-native.nvim": { "branch": "main", "commit": "6fea601bd2b694c6f2ae08a6c6fab14930c60e2c" },
   "telescope.nvim": { "branch": "master", "commit": "5255aa27c422de944791318024167ad5d40aad20" },
   "todo-comments.nvim": { "branch": "main", "commit": "31e3c38ce9b29781e4422fc0322eb0a21f4e8668" },
+  "tree-sitter-manager.nvim": { "branch": "main", "commit": "4f899fb5d47f23ebf15aa43bb1766f2fe6cf4ab0" },
   "which-key.nvim": { "branch": "main", "commit": "3aab2147e74890957785941f0c1ad87d0a44c15a" },
   "witch-line": { "branch": "main", "commit": "929a5e9f7ff05bf412507a79c285955ad9e54c3f" }
 }

@@ -126,23 +126,6 @@ require("lazy").setup(
         { 'nvim-telescope/telescope-fzf-native.nvim', build = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release --target install' }
     }
 },
-   {
-      "nvim-treesitter/nvim-treesitter",
-      version = false,
-      build = ":TSUpdate",
-      lazy = false,
-      opts = {
-        indent = {
-          enable = true,
-        },
-        highlight = {
-          enable = true,
-        },
-      },
-      config = function(_, opts)
-        require("nvim-treesitter.configs").setup(opts)
-      end,
-    },
 {
     "romus204/referencer.nvim",
     config = function()
@@ -193,16 +176,16 @@ require("lazy").setup(
     -- use opts = {} for passing setup options
     -- this is equivalent to setup({}) function
 },
--- {
---   "folke/todo-comments.nvim",
---   dependencies = { "nvim-lua/plenary.nvim" },
---   event = "BufEnter",
---   opts = {
---     -- your configuration comes here
---     -- or leave it empty to use the default settings
---     -- refer to the configuration section below
---   }
--- },
+{
+  "folke/todo-comments.nvim",
+  dependencies = { "nvim-lua/plenary.nvim" },
+  event = "BufEnter",
+  opts = {
+    -- your configuration comes here
+    -- or leave it empty to use the default settings
+    -- refer to the configuration section below
+  }
+},
 {
   "mfussenegger/nvim-dap",
   event = "VeryLazy",
@@ -398,6 +381,15 @@ require("lazy").setup(
       mode = { "n" },
     },
   },
+},
+{
+  "romus204/tree-sitter-manager.nvim",
+  dependencies = {}, -- tree-sitter CLI must be installed system-wide
+  config = function()
+    require("tree-sitter-manager").setup({
+      
+    })
+  end
 },
 
 
