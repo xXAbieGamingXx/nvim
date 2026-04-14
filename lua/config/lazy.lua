@@ -1,33 +1,3 @@
--- local Util = require("lazy.util")
-
--- local M = {}
-
--- M.lazy_file = "lazy.lua"
-
--- ---@param plugin LazyPlugin
--- ---@return LazyPkg?
--- function M.get(plugin)
---   local file = Util.norm(plugin.dir .. "/" .. M.lazy_file)
---   if Util.file_exists(file) then
---     ---@type fun(): LazySpec
---     local chunk = Util.try(function()
---       local ret, err = loadfile(file)
---       return err and error(err) or ret
---     end, "`" .. M.lazy_file .. "` for **" .. plugin.name .. "** has errors:")
---     if not chunk then
---       Util.error("Invalid `" .. M.lazy_file .. "` for **" .. plugin.name .. "**")
---       return
---     end
---     return {
---       source = "lazy",
---       file = M.lazy_file,
---       code = "function()\n" .. Util.read_file(file) .. "\nend",
---     }
---   end
--- end
-
--- return M
--- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
   local lazyrepo = "https://github.com/folke/lazy.nvim.git"
@@ -279,9 +249,9 @@ require("lazy").setup(
   },
 },
 {
-  "HiPhish/rainbow-delimiters.nvim",
+  "HiPhish/rainbow-delimiters.nvim", -- unusable without nvim-treesitter and i dont want to use an unmaintained plugin that is unsupporting the newest version
+  enabled = false,
   event = "BufEnter",
-  dependencies = {"nvim-treesitter/nvim-treesitter"},
   config = function()
     require("rainbow-delimiters.setup").setup()
   end,
