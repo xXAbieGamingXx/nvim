@@ -1,10 +1,8 @@
 {
-  "Fknotes.nvim": { "branch": "main", "commit": "83c1b79df216461f89bbf2d274b12116a83b6a3c" },
   "agentic.nvim": { "branch": "main", "commit": "69da7037824780a8b5998f5d7dcb35fe9b099a9c" },
   "cellular-automaton.nvim": { "branch": "main", "commit": "1606e9d5d04ff254023c3f3c62842d065708d6d3" },
   "dashboard-nvim": { "branch": "master", "commit": "62a10d9d55132b338dd742afc3c8a2683f3dd426" },
   "lazy.nvim": { "branch": "main", "commit": "306a05526ada86a7b30af95c5cc81ffba93fef97" },
-  "nui.nvim": { "branch": "main", "commit": "de740991c12411b663994b2860f1a4fd0937c130" },
   "nvim-autopairs": { "branch": "master", "commit": "59bce2eef357189c3305e25bc6dd2d138c1683f5" },
   "nvim-dap": { "branch": "master", "commit": "45a69eba683a2c448dd9ecfc4de89511f0646b5f" },
   "nvim-dap-ui": { "branch": "master", "commit": "1a66cabaa4a4da0be107d5eda6d57242f0fe7e49" },
@@ -16,13 +14,14 @@
   "playtime.nvim": { "branch": "main", "commit": "d7427739558c74920f284ab370ba47bacacb8f97" },
   "plenary.nvim": { "branch": "master", "commit": "74b06c6c75e4eeb3108ec01852001636d85a932b" },
   "qalc.nvim": { "branch": "main", "commit": "33198ba0533d6a514f9a48cb472e40407c2ea9f6" },
-  "rainbow-delimiters.nvim": { "branch": "master", "commit": "d6b802552cbe7d643a3b6b31f419c248d1f1e220" },
   "referencer.nvim": { "branch": "master", "commit": "7e9420ee16e3b3eecc9b3fc53ff75448435e94bd" },
+  "render-markdown.nvim": { "branch": "main", "commit": "d67113f11384c0dad96fced2f7b91f1fc811e97f" },
   "sudoku.nvim": { "branch": "main", "commit": "c7dfd2f9fc7108ef3832a02f40a76ab1b2d940ce" },
   "telescope-fzf-native.nvim": { "branch": "main", "commit": "6fea601bd2b694c6f2ae08a6c6fab14930c60e2c" },
   "telescope.nvim": { "branch": "master", "commit": "3ab376cfae65b921dda454df5967f8df673effc6" },
   "todo-comments.nvim": { "branch": "main", "commit": "31e3c38ce9b29781e4422fc0322eb0a21f4e8668" },
   "tree-sitter-manager.nvim": { "branch": "main", "commit": "fa63bc63ae08b661843d9976a43becfbd3daf76c" },
+  "venn.nvim": { "branch": "main", "commit": "b09c2f36ddf70b498281845109bedcf08a7e0de0" },
   "which-key.nvim": { "branch": "main", "commit": "3aab2147e74890957785941f0c1ad87d0a44c15a" },
   "witch-line": { "branch": "main", "commit": "95205c5b5e9ef28fe143125ef1c3fac41cff8a14" }
 }

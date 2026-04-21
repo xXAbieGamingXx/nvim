@@ -23,16 +23,6 @@ vim.g.maplocalleader = "\\"
 -- Setup lazy.nvim
 require("lazy").setup(
   {
-  {
-  'flashcodes-themayankjha/Fknotes.nvim',
-
-  dependencies = { "MunifTanjim/nui.nvim" },
-  config = function()
-    require('fknotes').setup({
-      -- your configuration here
-    })
-  end
-},
 { "nvim-tree/nvim-web-devicons", lazy = true, opts = {} },
 {
   "nvimdev/dashboard-nvim",
@@ -249,14 +239,6 @@ require("lazy").setup(
   },
 },
 {
-  "HiPhish/rainbow-delimiters.nvim", -- unusable without nvim-treesitter and i dont want to use an unmaintained plugin that is unsupporting the newest version
-  enabled = false,
-  event = "BufEnter",
-  config = function()
-    require("rainbow-delimiters.setup").setup()
-  end,
-},
-{
     dir = "C:\\Users\\Macch\\AppData\\Local\\nvim-data\\aoc\\aoc.nvim",
     dependencies = { "nvim-lua/plenary.nvim" },
     command = {"AocGetPuzzleInput", "AocGetTodayPuzzleInput"},
@@ -368,6 +350,19 @@ require("lazy").setup(
     require("qalc").setup({})
   end,
 },
+{
+  "jbyuki/venn.nvim", -- this is an epic plugin look up when you want to actually use it xd
+  
+},
+{
+    'MeanderingProgrammer/render-markdown.nvim',
+    -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' },
+    dependencies = {'nvim-tree/nvim-web-devicons' },
+    ---@module 'render-markdown'
+    ---@type render.md.UserConfig
+    opts = {},
+},
+
 
 
 
@@ -401,6 +396,7 @@ vim.keymap.set("n", "<leader>v", ":vs<cr>", {noremap = true, silent = true,}) --
 vim.keymap.set("n", "<leader>o", ":Oil .<cr>", {noremap = true, silent = true,}) -- open file explorer
 vim.keymap.set("t", "<C-i>", "<C-\\><C-N><C-6>", {noremap = true, silent = true})
 vim.keymap.set("t", "<C-n>", "<C-\\><C-N>", {noremap = true, silent = true})
+vim.keymap.set("v", "<leader>b", ":VBox", {noremap = true, silent = true})
 
 local builtin = require('telescope.builtin')
 vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = 'Telescope find files' })
@@ -411,6 +407,17 @@ vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Telescope help ta
 
 local terms = {}
 local index = 0
+local floating = false
+
+vim.keymap.set({'n', 'v'}, '<leader>p', function()
+  if floating then
+    vim.cmd("set ve=none")
+    float = false
+  else
+    vim.cmd("set ve=all")
+    float = true
+  end
+end, {noremap = true, silent = true})
 
 vim.keymap.set('n', '<leader>e', function()
 	if index < 10 then
