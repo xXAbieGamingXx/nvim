@@ -19,7 +19,6 @@ vim.opt.rtp:prepend(lazypath)
 -- This is also a good place to setup other settings (vim.opt)
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
-
 -- Setup lazy.nvim
 require("lazy").setup(
   {
@@ -56,7 +55,7 @@ require("lazy").setup(
         center = {
             {
               icon = "  ",
-              desc = "Recently Opened Files",
+              desc = "Recent Files",
               key="r",
               action = "Telescope oldfiles",
             },
@@ -65,7 +64,7 @@ require("lazy").setup(
               desc = "New File",
               key="n",
               action = "enew",
-            },
+            }, -- TODO: make it sort by markdown and not markdown files
             { action = function() vim.api.nvim_input("<cmd>qa<cr>") end, desc = " Quit", icon = " ", key = "q" },
             
         },
@@ -80,11 +79,14 @@ require("lazy").setup(
 },
 {
   'nvim-telescope/telescope.nvim',
-  cmd = "Telescope",
+  -- cmd = "Telescope",
   dependencies = {
-        'nvim-lua/plenary.nvim',
-        { 'nvim-telescope/telescope-fzf-native.nvim', build = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release --target install' }
-    }
+    'nvim-lua/plenary.nvim',
+    { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' }
+  },
+  config = function()
+    require('telescope').setup {}
+  end,
 },
 {
     "romus204/referencer.nvim",
@@ -361,7 +363,9 @@ require("lazy").setup(
     dependencies = {'nvim-tree/nvim-web-devicons' },
     ---@module 'render-markdown'
     ---@type render.md.UserConfig
-    opts = {},
+    opts = {
+      render_modes = { 'n', 'c', 't', 'i' },
+    },
 },
 {
   "hat0uma/csvview.nvim",
@@ -420,6 +424,7 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 vim.cmd("colorscheme onedark")
+require('telescope').load_extension('fzf')
 
 vim.keymap.set("n", "<leader>v", ":vs<cr>", {noremap = true, silent = true,}) -- vertical split
 vim.keymap.set("n", "<leader>o", ":Oil .<cr>", {noremap = true, silent = true,}) -- open file explorer
