@@ -54,17 +54,17 @@ require("lazy").setup(
       
         center = {
             {
-              icon = "  ",
-              desc = "Recent Files",
+              icon = "  ",
+              desc = "Recent Projects",
               key="r",
-              action = "Telescope oldfiles",
+              action = "Telescope projects",
             },
             {
               icon = "  ",
               desc = "New File",
               key="n",
               action = "enew",
-            }, -- TODO: make it sort by markdown and not markdown files
+            },
             { action = function() vim.api.nvim_input("<cmd>qa<cr>") end, desc = " Quit", icon = " ", key = "q" },
             
         },
@@ -76,6 +76,16 @@ require("lazy").setup(
 {
   "olimorris/onedarkpro.nvim",
   priority = 1000, -- Ensure it loads first
+},
+{
+  "ahmedkhalf/project.nvim",
+  config = function()
+    require("project_nvim").setup {
+      -- your configuration comes here
+      -- or leave it empty to use the default settings
+      -- refer to the configuration section below
+    }
+  end,
 },
 {
   'nvim-telescope/telescope.nvim',
@@ -425,6 +435,7 @@ vim.api.nvim_create_autocmd("FileType", {
 
 vim.cmd("colorscheme onedark")
 require('telescope').load_extension('fzf')
+require('telescope').load_extension('projects')
 
 vim.keymap.set("n", "<leader>v", ":vs<cr>", {noremap = true, silent = true,}) -- vertical split
 vim.keymap.set("n", "<leader>o", ":Oil .<cr>", {noremap = true, silent = true,}) -- open file explorer
