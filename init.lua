@@ -1,5 +1,5 @@
 require("config.lazy")
-vim.o.shell = "C:\\msys64\\usr\\bin\\bash.exe"
+vim.o.shell = '"C:/Program Files/PowerShell/7/pwsh.exe"'
 vim.opt.autochdir = true
 vim.o.number = true
 vim.o.shellxquote = ""
