@@ -281,6 +281,9 @@ require("lazy").setup(
       ["g."] = { "actions.toggle_hidden", mode = "n" },
       ["g\\"] = { "actions.toggle_trash", mode = "n" },
     },
+    view_options = {
+      show_hidden = true
+    },
     use_default_keymaps = false
   },
   -- Optional dependencies
@@ -310,12 +313,13 @@ require("lazy").setup(
 },
 {
     'MeanderingProgrammer/render-markdown.nvim',
-    -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' },
     dependencies = {'nvim-tree/nvim-web-devicons' },
-    ---@module 'render-markdown'
-    ---@type render.md.UserConfig
     opts = {
       render_modes = { 'n', 'c', 't', 'i' },
+      latex = {
+        enabled = false,
+        converter = 'latex2text',
+      },
     },
 },
 {
@@ -347,7 +351,34 @@ require("lazy").setup(
     end,
     cmd = {"Hex", "UnHex", "HexSet"},
 },
-
+{
+    "OXY2DEV/markview.nvim",
+    lazy = false,
+    opts = {
+      html = {
+        enable = false,
+      },
+      latex = {
+        enable = true,
+      },
+      markdown = {
+        enable = false,
+      },
+      markdown_inline = {
+        enable = false,
+      },
+      preview = {
+        enable = true,
+        modes = {'n', 'i', 'v', 'c'},
+      },
+      typst = {
+        enable = false,
+      },
+      yaml = {
+        enable = false,
+      }
+    }
+},
 
 
 
@@ -379,10 +410,11 @@ require('telescope').load_extension('fzf')
 require('telescope').load_extension('projects')
 
 vim.keymap.set("n", "<leader>v", ":vs<cr>", {noremap = true, silent = true,}) -- vertical split
-vim.keymap.set("n", "<leader>o", ":Oil .<cr>", {noremap = true, silent = true,}) -- open file explorer
+vim.keymap.set({"n", "v"}, "<leader>o", ":Oil .<cr>", {noremap = true, silent = true,}) -- open file explorer
 vim.keymap.set("t", "<C-i>", "<C-\\><C-N><C-6>", {noremap = true, silent = true})
 vim.keymap.set("t", "<C-n>", "<C-\\><C-N>", {noremap = true, silent = true})
-vim.keymap.set("v", "<leader>b", ":VBox", {noremap = true, silent = true})
+vim.keymap.set("v", "<leader>b", ":VBox", {noremap = true}) -- set ve=all
+vim.keymap.set('n', '<leader>m', ":lua require('nabla').popup()<cr>", {noremap = true, silent = true})
 
 local builtin = require('telescope.builtin')
 vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = 'Telescope find files' })
