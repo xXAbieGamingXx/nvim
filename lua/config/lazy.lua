@@ -99,12 +99,6 @@ require("lazy").setup(
   end,
 },
 {
-    "romus204/referencer.nvim",
-    config = function()
-        require("referencer").setup()
-    end
-},
-{
   'jim-fx/sudoku.nvim',
   cmd = "Sudoku",
   config = function()
@@ -160,7 +154,7 @@ require("lazy").setup(
 },
 {
   "mfussenegger/nvim-dap",
-  event = "VeryLazy",
+  ft = {"c", "cpp"},
   config = function()
     dap = require("dap")
     dap.adapters.gdb = {
@@ -294,6 +288,7 @@ require("lazy").setup(
 {
   "romus204/tree-sitter-manager.nvim",
   dependencies = {}, -- tree-sitter CLI must be installed system-wide
+  cmd = "TSManager",
   config = function()
     require("tree-sitter-manager").setup({
       
@@ -314,6 +309,7 @@ require("lazy").setup(
 {
     'MeanderingProgrammer/render-markdown.nvim',
     dependencies = {'nvim-tree/nvim-web-devicons' },
+    ft = "markdown",
     opts = {
       render_modes = { 'n', 'c', 't', 'i' },
       latex = {
@@ -353,6 +349,7 @@ require("lazy").setup(
 },
 {
     "OXY2DEV/markview.nvim",
+    ft = "markdown",
     lazy = false,
     opts = {
       html = {
@@ -385,7 +382,11 @@ require("lazy").setup(
   -- Configure any other settings here. See the documentation for more details.
   -- colorscheme that will be used when installing plugins.
   -- automatically check for plugin updates
-  checker = { enabled = true },
+  checker = {
+    enabled = true, -- Automatically check for plugin updates
+    notify = true,  -- Show a notification when updates are available
+    frequency = 86400, -- Check frequency in seconds (86,400 = 24 hours)
+  },
 }
 )
 
