@@ -433,8 +433,7 @@ vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = 'Telescope buffers' 
 vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Telescope help tags' })
 
 
-local terms = {}
-local index = 0
+
 local floating = false
 
 vim.keymap.set({'n', 'v'}, '<leader>p', function()
@@ -447,6 +446,9 @@ vim.keymap.set({'n', 'v'}, '<leader>p', function()
   end
 end, {noremap = true, silent = true})
 
+local terms = {}
+local index = 0
+
 vim.keymap.set('n', '<leader>e', function()
 	if index < 10 then
 		vim.cmd("term")
@@ -458,52 +460,92 @@ end, {noremap = true, silent = true})
 
 vim.keymap.set("n", "<leader>r", function()
 	if index >= 1 then
-		vim.cmd("b! "..terms[0])
+    if vim.api.nvim_buf_is_valid() then
+		  vim.cmd("b! "..terms[0])
+    else
+      vim.cmd("term")
+		  terms[0] = vim.api.nvim_buf_get_name(0)
+    end
 	end
 end, {noremap = true, silent = true})
 
-vim.keymap.set("n", "<leader>w1", function()
-	if index >= 1 then
-		vim.cmd("b! "..terms[0])
-	end
-end, {noremap = true, silent = true})
 vim.keymap.set("n", "<leader>w2", function()
 	if index >= 2 then
-		vim.cmd("b! "..terms[1])
+    if vim.api.nvim_buf_is_valid() then
+		  vim.cmd("b! "..terms[1])
+    else
+      vim.cmd("term")
+		  terms[1] = vim.api.nvim_buf_get_name(0)
+    end
 	end
 end, {noremap = true, silent = true})
 vim.keymap.set("n", "<leader>w3", function()
 	if index >= 3 then
-		vim.cmd("b! "..terms[2])
+    if vim.api.nvim_buf_is_valid() then
+		  vim.cmd("b! "..terms[2])
+    else
+      vim.cmd("term")
+		  terms[2] = vim.api.nvim_buf_get_name(0)
+    end
 	end
 end, {noremap = true, silent = true})
 vim.keymap.set("n", "<leader>w4", function()
 	if index >= 4 then
-		vim.cmd("b! "..terms[3])
+    if vim.api.nvim_buf_is_valid() then
+		  vim.cmd("b! "..terms[3])
+    else
+      vim.cmd("term")
+		  terms[3] = vim.api.nvim_buf_get_name(0)
+    end
 	end
 end, {noremap = true, silent = true})
 vim.keymap.set("n", "<leader>w5", function()
 	if index >= 5 then
-		vim.cmd("b! "..terms[4])
+    if vim.api.nvim_buf_is_valid() then
+		  vim.cmd("b! "..terms[4])
+    else
+      vim.cmd("term")
+		  terms[4] = vim.api.nvim_buf_get_name(0)
+    end
 	end
 end, {noremap = true, silent = true})
 vim.keymap.set("n", "<leader>w6", function()
 	if index >= 6 then
-		vim.cmd("b! "..terms[5])
+    if vim.api.nvim_buf_is_valid() then
+		  vim.cmd("b! "..terms[5])
+    else
+      vim.cmd("term")
+		  terms[5] = vim.api.nvim_buf_get_name(0)
+    end
 	end
 end, {noremap = true, silent = true})
 vim.keymap.set("n", "<leader>w7", function()
 	if index >= 7 then
-		vim.cmd("b! "..terms[6])
+    if vim.api.nvim_buf_is_valid() then
+		  vim.cmd("b! "..terms[6])
+    else
+      vim.cmd("term")
+		  terms[6] = vim.api.nvim_buf_get_name(0)
+    end
 	end
 end, {noremap = true, silent = true})
 vim.keymap.set("n", "<leader>w8", function()
 	if index >= 8 then
-		vim.cmd("b! "..terms[7])
+    if vim.api.nvim_buf_is_valid() then
+		  vim.cmd("b! "..terms[7])
+    else
+      vim.cmd("term")
+		  terms[7] = vim.api.nvim_buf_get_name(0)
+    end
 	end
 end, {noremap = true, silent = true})
 vim.keymap.set("n", "<leader>w9", function()
 	if index >= 9 then
-		vim.cmd("b! "..terms[8])
+    if vim.api.nvim_buf_is_valid() then
+		  vim.cmd("b! "..terms[8])
+    else
+      vim.cmd("term")
+		  terms[8] = vim.api.nvim_buf_get_name(0)
+    end
 	end
 end, {noremap = true, silent = true})
