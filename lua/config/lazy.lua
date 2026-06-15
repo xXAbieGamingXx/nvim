@@ -229,7 +229,20 @@ require("lazy").setup(
 {
   "rcarriga/nvim-dap-ui",
   ft = {"c", "cpp"},
-  config = true,
+  config = function()
+    require("dapui").setup({
+      layouts = {
+        {
+          -- Only displays the console / terminal output window at the bottom
+          elements = {
+            { id = "console", size = 1.0 } 
+          },
+          position = "bottom",
+          size = 15,
+        },
+      },
+    })
+  end,
   keys = {
     {
       "<leader>du",
@@ -245,7 +258,7 @@ require("lazy").setup(
   },
 },
 {
-    dir = "C:\\Users\\Macch\\AppData\\Local\\nvim-data\\aoc\\aoc.nvim",
+    "xXAbieGamingXx/a",
     dependencies = { "nvim-lua/plenary.nvim" },
     lazy = true,
     command = {"AocGetPuzzleInput", "AocGetTodayPuzzleInput"},
@@ -379,13 +392,9 @@ require("lazy").setup(
 
 
 
-  -- Configure any other settings here. See the documentation for more details.
-  -- colorscheme that will be used when installing plugins.
-  -- automatically check for plugin updates
+
   checker = {
-    enabled = true, -- Automatically check for plugin updates
-    notify = true,  -- Show a notification when updates are available
-    frequency = 86400, -- Check frequency in seconds (86,400 = 24 hours)
+    enabled = false,
   },
 }
 )
