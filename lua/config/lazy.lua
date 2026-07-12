@@ -379,7 +379,7 @@ require("lazy").setup(
       },
       preview = {
         enable = true,
-        modes = {'n', 'i', 'v', 'c'},
+        modes = {'n', 'i', 'v', 'c', 't'},
       },
       typst = {
         enable = false,
@@ -388,6 +388,10 @@ require("lazy").setup(
         enable = false,
       }
     }
+},
+{
+  "sindrets/diffview.nvim",
+  cmd = "DiffviewOpen"
 },
 
 
@@ -415,6 +419,13 @@ vim.api.nvim_create_autocmd("FileType", {
   end
 })
 
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+  pattern = {"*.pio"},
+  callback = function()
+    vim.bo.filetype = "pioasm" -- idk why but this is the parsers filetype requirement
+  end,
+})
+
 vim.cmd("colorscheme onedark")
 require('telescope').load_extension('fzf')
 require('telescope').load_extension('projects')
@@ -431,6 +442,11 @@ vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = 'Telescope find f
 vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = 'Telescope live grep' })
 vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = 'Telescope buffers' })
 vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Telescope help tags' })
+
+vim.keymap.set({'n', 'v'}, 'J', "5j", {noremap = true, silent = true})
+vim.keymap.set({'n', 'v'}, 'K', "5k", {noremap = true, silent = true})
+vim.keymap.set({'n', 'v'}, 'L', "5l", {noremap = true, silent = true})
+vim.keymap.set({'n', 'v'}, 'H', "5h", {noremap = true, silent = true})
 
 
 

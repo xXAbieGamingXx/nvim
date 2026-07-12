@@ -8,6 +8,8 @@ vim.o.foldenable = false
 vim.o.shiftwidth = 8
 vim.o.tabstop = 8
 vim.o.expandtab = false
+vim.o.autoindent = true
+vim.o.smartindent = true
 
 
 -- uneeded builtin features to speed up load time
