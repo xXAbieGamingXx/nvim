@@ -393,7 +393,28 @@ require("lazy").setup(
   },
   opts = {},
 },
+{
+  "nvim-telescope/telescope.nvim",
+  dependencies = {
+    { 
+        "nvim-telescope/telescope-live-grep-args.nvim" ,
+        -- This will not install any breaking changes.
+        -- For major updates, this must be adjusted manually.
+        version = "^1.0.0",
+    },
+  },
+  config = function()
+    local telescope = require("telescope")
 
+    -- first setup telescope
+    telescope.setup({
+        -- your config
+    })
+
+    -- then load the extension
+    telescope.load_extension("live_grep_args")
+  end
+},
 
 
 
@@ -455,9 +476,10 @@ vim.keymap.set('n', '<leader>m', ":lua require('nabla').popup()<cr>", {noremap =
 
 local builtin = require('telescope.builtin')
 vim.keymap.set('n', '<leader>ff', function()
-  builtin.find_files({ search_dirs = { vim.fs.root(0, { '.git' }) } })
-end, { desc = 'Telescope find files' })vim.keymap.set('n', '<leader>fg', function()
-  builtin.live_grep({ search_dirs = { vim.fs.root(0, { '.git' }) } })
+  builtin.find_files({ search_dirs = { vim.fs.root(0, { '.git' }) }, path_display = {"smart"} })
+end, { desc = 'Telescope find files' })
+vim.keymap.set('n', '<leader>fg', function()
+  require("telescope").extensions.live_grep_args.live_grep_args({ search_dirs = { vim.fs.root(0, { '.git' }) }, path_display = {"smart"} })
 end, { desc = 'Telescope live grep' })
 vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = 'Telescope buffers' })
 vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Telescope help tags' })
