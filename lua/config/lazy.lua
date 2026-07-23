@@ -164,7 +164,7 @@ require("lazy").setup(
     }
     dap.configurations.c = {
     {
-    name = "Launch file",
+    name = "Launch file (native)",
     type = "gdb",
     request = "launch",
     program = function()
@@ -173,15 +173,6 @@ require("lazy").setup(
     cwd = '${workspaceFolder}',
     
     stopAtBeginningOfMainSubprogram = true,
-  },
-  {
-    name = 'Attach to gdbserver :1234',
-    type = 'gdb',
-    request = 'launch',
-    cwd = '${workspaceFolder}',
-    program = function()
-      return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
-    end,
   },
 }
   end,
@@ -393,6 +384,15 @@ require("lazy").setup(
   "sindrets/diffview.nvim",
   cmd = "DiffviewOpen"
 },
+{
+  "swaits/scratch.nvim",
+  lazy = true,
+  cmd = {
+    "Scratch",
+    "ScratchSplit",
+  },
+  opts = {},
+},
 
 
 
@@ -419,6 +419,22 @@ vim.api.nvim_create_autocmd("FileType", {
   end
 })
 
+in_spaces = false
+
+vim.api.nvim_create_autocmd("BufReadPost", {
+  pattern = "*",
+  callback = function()
+    if vim.inspect(vim.b.editorconfig) == "" then -- check for editorconfig
+      if vim.b.editorconfig.indent_style == "tab" then
+        vim.opt_local.tabwidth = 8
+        vim.opt_local.tabstop = 8
+      else
+        vim.opt_local.vartabstop = tostring(vim.o.shiftwidth) .. ":8"
+      end
+    end
+  end,
+})
+
 vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
   pattern = {"*.pio"},
   callback = function()
@@ -438,8 +454,11 @@ vim.keymap.set("v", "<leader>b", ":VBox", {noremap = true}) -- set ve=all
 vim.keymap.set('n', '<leader>m', ":lua require('nabla').popup()<cr>", {noremap = true, silent = true})
 
 local builtin = require('telescope.builtin')
-vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = 'Telescope find files' })
-vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = 'Telescope live grep' })
+vim.keymap.set('n', '<leader>ff', function()
+  builtin.find_files({ search_dirs = { vim.fs.root(0, { '.git' }) } })
+end, { desc = 'Telescope find files' })vim.keymap.set('n', '<leader>fg', function()
+  builtin.live_grep({ search_dirs = { vim.fs.root(0, { '.git' }) } })
+end, { desc = 'Telescope live grep' })
 vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = 'Telescope buffers' })
 vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Telescope help tags' })
 
