@@ -19,6 +19,7 @@ vim.opt.rtp:prepend(lazypath)
 -- This is also a good place to setup other settings (vim.opt)
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
+vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true, noremap = true }) -- this stops space from moving the cursor
 -- Setup lazy.nvim
 require("lazy").setup(
   {
@@ -92,7 +93,8 @@ require("lazy").setup(
   -- cmd = "Telescope",
   dependencies = {
     'nvim-lua/plenary.nvim',
-    { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' }
+    { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
+    "nvim-telescope/telescope-live-grep-args.nvim",
   },
   config = function()
     require('telescope').setup {}
@@ -113,25 +115,39 @@ require("lazy").setup(
       "nvim-tree/nvim-web-devicons",
   },
   lazy = false, -- Almost component is lazy load by default. So you can set lazy to false
-  opts = {},
-},
-{
-  "folke/which-key.nvim",
-  event = "VeryLazy",
-  opts = {
-    -- your configuration comes here
-    -- or leave it empty to use the default settings
-    -- refer to the configuration section below
-  },
-  keys = {
-    {
-      "<leader>?",
-      function()
-        require("which-key").show({ global = false })
-      end,
-      desc = "Buffer Local Keymaps (which-key)",
-    },
-  },
+  config = function()
+    require("witch-line").setup({
+      statusline = {
+        global = {
+          "mode",
+          "file.name",
+          "file.icon",
+          "file.modifier",
+
+          "git.branch",
+          "git.diff.added",
+          "git.diff.removed",
+          "git.diff.modified",
+
+          "%=",
+
+          "lsp.clients",
+
+          -- "windsurf.neocodeium",
+          -- "windsurf",
+
+          "indent",
+          -- "encoding",
+          "cursor.pos",
+          "cursor.progress",
+        },
+      },
+      disabled = {
+        filetypes = { "TelescopePrompt", "TelescopeResults" },
+        buftypes = { "prompt" },
+      },
+    })
+  end,
 },
 {"eandrju/cellular-automaton.nvim", cmd = "CellularAutomaton",},
 {"rktjmp/playtime.nvim", cmd = "Playtime",},
@@ -394,26 +410,8 @@ require("lazy").setup(
   opts = {},
 },
 {
-  "nvim-telescope/telescope.nvim",
-  dependencies = {
-    { 
-        "nvim-telescope/telescope-live-grep-args.nvim" ,
-        -- This will not install any breaking changes.
-        -- For major updates, this must be adjusted manually.
-        version = "^1.0.0",
-    },
-  },
-  config = function()
-    local telescope = require("telescope")
-
-    -- first setup telescope
-    telescope.setup({
-        -- your config
-    })
-
-    -- then load the extension
-    telescope.load_extension("live_grep_args")
-  end
+  "neovim/nvim-lspconfig",
+  vim.lsp.enable("clangd")
 },
 
 
@@ -466,10 +464,12 @@ vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
 vim.cmd("colorscheme onedark")
 require('telescope').load_extension('fzf')
 require('telescope').load_extension('projects')
+require('telescope').load_extension("live_grep_args")
 
-vim.keymap.set("n", "<leader>v", ":vs<cr>", {noremap = true, silent = true,}) -- vertical split
+vim.keymap.set("n", "<leader>v", ":vsplit<cr>", {noremap = true, silent = true,}) -- these do have very unintuitive keybindings if i need more <leader> things
+vim.keymap.set("n", "<leader>h", ":split<cr>", {noremap = true, silent = true,})
 vim.keymap.set({"n", "v"}, "<leader>o", ":Oil .<cr>", {noremap = true, silent = true,}) -- open file explorer
-vim.keymap.set("t", "<C-i>", "<C-\\><C-N><C-6>", {noremap = true, silent = true})
+vim.keymap.set("t", "<C-k>", "<C-\\><C-N><C-6>", {noremap = true, silent = true})
 vim.keymap.set("t", "<C-n>", "<C-\\><C-N>", {noremap = true, silent = true})
 vim.keymap.set("v", "<leader>b", ":VBox", {noremap = true}) -- set ve=all
 vim.keymap.set('n', '<leader>m', ":lua require('nabla').popup()<cr>", {noremap = true, silent = true})
@@ -481,6 +481,7 @@ end, { desc = 'Telescope find files' })
 vim.keymap.set('n', '<leader>fg', function()
   require("telescope").extensions.live_grep_args.live_grep_args({ search_dirs = { vim.fs.root(0, { '.git' }) }, path_display = {"smart"} })
 end, { desc = 'Telescope live grep' })
+vim.keymap.set('n', '<leader>fr', builtin.live_grep, { desc = 'Telescope live grep' })
 vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = 'Telescope buffers' })
 vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Telescope help tags' })
 
@@ -521,7 +522,7 @@ vim.keymap.set("n", "<leader>r", function()
 		  vim.cmd("b! "..terms[0])
     else
       vim.cmd("term")
-		  terms[0] = vim.api.nvim_buf_get_name(0)
+		  terms[0] = vim.api.nvim_get_current_buf()
     end
 	end
 end, {noremap = true, silent = true})
@@ -532,7 +533,7 @@ vim.keymap.set("n", "<leader>w2", function()
 		  vim.cmd("b! "..terms[1])
     else
       vim.cmd("term")
-		  terms[1] = vim.api.nvim_buf_get_name(0)
+		  terms[1] = vim.api.nvim_get_current_buf()
     end
 	end
 end, {noremap = true, silent = true})
@@ -542,7 +543,7 @@ vim.keymap.set("n", "<leader>w3", function()
 		  vim.cmd("b! "..terms[2])
     else
       vim.cmd("term")
-		  terms[2] = vim.api.nvim_buf_get_name(0)
+		  terms[2] = vim.api.nvim_get_current_buf()
     end
 	end
 end, {noremap = true, silent = true})
@@ -552,7 +553,7 @@ vim.keymap.set("n", "<leader>w4", function()
 		  vim.cmd("b! "..terms[3])
     else
       vim.cmd("term")
-		  terms[3] = vim.api.nvim_buf_get_name(0)
+		  terms[3] = vim.api.nvim_get_current_buf()
     end
 	end
 end, {noremap = true, silent = true})
@@ -562,7 +563,7 @@ vim.keymap.set("n", "<leader>w5", function()
 		  vim.cmd("b! "..terms[4])
     else
       vim.cmd("term")
-		  terms[4] = vim.api.nvim_buf_get_name(0)
+		  terms[4] = vim.api.nvim_get_current_buf()
     end
 	end
 end, {noremap = true, silent = true})
@@ -572,7 +573,7 @@ vim.keymap.set("n", "<leader>w6", function()
 		  vim.cmd("b! "..terms[5])
     else
       vim.cmd("term")
-		  terms[5] = vim.api.nvim_buf_get_name(0)
+		  terms[5] = vim.api.nvim_get_current_buf()
     end
 	end
 end, {noremap = true, silent = true})
@@ -582,7 +583,7 @@ vim.keymap.set("n", "<leader>w7", function()
 		  vim.cmd("b! "..terms[6])
     else
       vim.cmd("term")
-		  terms[6] = vim.api.nvim_buf_get_name(0)
+		  terms[6] = vim.api.nvim_get_current_buf()
     end
 	end
 end, {noremap = true, silent = true})
@@ -592,7 +593,7 @@ vim.keymap.set("n", "<leader>w8", function()
 		  vim.cmd("b! "..terms[7])
     else
       vim.cmd("term")
-		  terms[7] = vim.api.nvim_buf_get_name(0)
+		  terms[7] = vim.api.nvim_get_current_buf()
     end
 	end
 end, {noremap = true, silent = true})
@@ -602,7 +603,7 @@ vim.keymap.set("n", "<leader>w9", function()
 		  vim.cmd("b! "..terms[8])
     else
       vim.cmd("term")
-		  terms[8] = vim.api.nvim_buf_get_name(0)
+		  terms[8] = vim.api.nvim_get_current_buf()
     end
 	end
 end, {noremap = true, silent = true})

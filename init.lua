@@ -10,7 +10,9 @@ vim.o.tabstop = 8
 vim.o.expandtab = false
 vim.o.autoindent = true
 vim.o.smartindent = true
+vim.o.laststatus = 3
 
+vim.diagnostic.enable(false)
 
 -- uneeded builtin features to speed up load time
 vim.g.loaded_netrw = 1
