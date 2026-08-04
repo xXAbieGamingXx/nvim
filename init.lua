@@ -12,7 +12,11 @@ vim.o.autoindent = true
 vim.o.smartindent = true
 vim.o.laststatus = 3
 
+
 vim.diagnostic.enable(false)
+
+-- config for vimscript plugins
+vim.g.rg_map_keys = 0
 
 -- uneeded builtin features to speed up load time
 vim.g.loaded_netrw = 1
