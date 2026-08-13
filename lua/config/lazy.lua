@@ -151,18 +151,18 @@ require("lazy").setup(
 			args = { "--interpreter=dap", "--eval-command", "set print pretty on" }
 		}
 		dap.configurations.c = {
-		{
-		name = "Launch file (native)",
-		type = "gdb",
-		request = "launch",
-		program = function()
-			return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
-		end,
-		cwd = '${workspaceFolder}',
-		
-		stopAtBeginningOfMainSubprogram = true,
-	},
-}
+			{
+			name = "Launch file (native)",
+			type = "gdb",
+			request = "launch",
+			program = function()
+				return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+			end,
+			cwd = '${workspaceFolder}',
+			
+			stopAtBeginningOfMainSubprogram = true,
+			},
+		}
 	end,
 
 	keys = {
@@ -225,38 +225,35 @@ require("lazy").setup(
 	opts = {session_filepath = "C:\\Users\\Macch\\AppData\\Local\\nvim-data\\aoc\\aoc.nvim\\lua\\aoc\\key.txt"}
 },
 {
-	'stevearc/oil.nvim',
-	---@module 'oil'
-	---@type oil.SetupOpts
+	"barrettruth/canola.nvim",
 	cmd = "Oil",
-	opts = {
-		keymaps = {
-			["g?"] = { "actions.show_help", mode = "n" },
-			["<CR>"] = "actions.select",
-			["<C-s>"] = { "actions.select", opts = { vertical = true } },
-			["<C-h>"] = { "actions.select", opts = { horizontal = true } },
-			["<C-t>"] = { "actions.select", opts = { tab = true } },
-			["<C-p>"] = "actions.preview",
-			["<C-c>"] = { "actions.close", mode = "n" },
-			["<C-l>"] = "actions.refresh",
-			["-"] = { "actions.parent", mode = "n" },
-			["_"] = { "actions.open_cwd", mode = "n" },
-			["`"] = { "actions.cd", mode = "n" },
-			["g~"] = { "actions.cd", opts = { scope = "tab" }, mode = "n" },
-			["gs"] = { "actions.change_sort", mode = "n" },
-			["gx"] = "actions.open_external",
-			["g."] = { "actions.toggle_hidden", mode = "n" },
-			["g\\"] = { "actions.toggle_trash", mode = "n" },
-		},
-		view_options = {
-			show_hidden = true
-		},
-		use_default_keymaps = false
-	},
-	-- Optional dependencies
-	-- dependencies = { { "nvim-mini/mini.icons", opts = {} } },
+	config = function() 
+		require("oil").setup({
+			keymaps = {
+				["g?"] = { "actions.show_help", mode = "n" },
+				["<CR>"] = "actions.select",
+				["<C-s>"] = { "actions.select", opts = { vertical = true } },
+				["<C-h>"] = { "actions.select", opts = { horizontal = true } },
+				["<C-t>"] = { "actions.select", opts = { tab = true } },
+				["<C-p>"] = "actions.preview",
+				["<C-c>"] = { "actions.close", mode = "n" },
+				["<C-l>"] = "actions.refresh",
+				["-"] = { "actions.parent", mode = "n" },
+				["_"] = { "actions.open_cwd", mode = "n" },
+				["`"] = { "actions.cd", mode = "n" },
+				["g~"] = { "actions.cd", opts = { scope = "tab" }, mode = "n" },
+				["gs"] = { "actions.change_sort", mode = "n" },
+				["gx"] = "actions.open_external",
+				["g."] = { "actions.toggle_hidden", mode = "n" },
+				["g\\"] = { "actions.toggle_trash", mode = "n" },
+			},
+			view_options = {
+				show_hidden = true
+			},
+			use_default_keymaps = false
+		})
+	end,
 	dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if you prefer nvim-web-devicons
-	-- Lazy loading is not recommended because it is very tricky to make it work correctly in all situations.
 },
 {
 	"romus204/tree-sitter-manager.nvim",
@@ -364,7 +361,18 @@ require("lazy").setup(
 },
 {
 	"neovim/nvim-lspconfig",
-	vim.lsp.enable("clangd")
+	config = function()
+		vim.lsp.config("clangd", {
+			cmd = {
+				"clangd",
+				"--background-index",
+				"--header-insertion=never",
+				"--query-driver=C:\\msys64\\mingw64\\bin\\*"
+			},
+			root_markers = { ".clangd", "compile_commands.json", "compile_flags.txt", ".git" }
+		})
+		vim.lsp.enable("clangd")
+	end,
 },
 {
 	"lewis6991/gitsigns.nvim",
@@ -374,8 +382,12 @@ require("lazy").setup(
 	cmd = "Gitsigns"
 },
 {
-	"duane9/nvim-rg",
-	cmd = "Rg",
+    "xXAbieGamingXx/myrg.nvim",
+    cmd = {"Rg", "Rgcwd", "Rgff"},
+},
+{
+	dir = "C:\\Users\\Macch\\OneDrive\\Desktop\\s\\r-random\\myrg.nvim",
+	enabled = false,
 },
 {
 	"natecraddock/workspaces.nvim",
@@ -408,6 +420,13 @@ vim.api.nvim_create_autocmd("FileType", {
 	end
 })
 
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "qf",
+	callback = function(args)
+		pcall(vim.treesitter.stop, args.buf)
+	end,
+})
+
 in_spaces = false
 
 vim.api.nvim_create_autocmd("BufReadPost", {
@@ -431,25 +450,34 @@ vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
 	end,
 })
 
+vim.api.nvim_create_autocmd({ "VimEnter" }, { -- it bugs out the first time you use it or something
+	callback = function()
+		vim.cmd("silent! Gitsigns toggle_signs")
+	end
+})
+
 vim.cmd("colorscheme onedark")
 
 vim.keymap.set("n", "<leader>c", function()
+	vim.cmd("Gitsigns toggle_signs")
 	vim.cmd("Gitsigns toggle_deleted")
 	vim.cmd("Gitsigns toggle_word_diff")
-	vim.cmd("Gitsigns toggle_signs")
 	vim.cmd("Gitsigns change_base ORIGIN/main")
 	vim.cmd("Gitsigns change_base ORIGIN/master")
 end, {noremap = true, silent = true})
 vim.keymap.set("n", "<leader>v", ":vsplit<cr>", {noremap = true, silent = true,}) -- these do have very unintuitive keybindings if i need more <leader> things
 vim.keymap.set("n", "<leader>h", ":split<cr>", {noremap = true, silent = true})
-vim.keymap.set({"n", "v"}, "<leader>o", ":Oil .<cr>", {noremap = true, silent = true}) -- open file explorer
+vim.keymap.set({"n", "v"}, "<leader>o", ":Oil .<cr>", {noremap = true, silent = true})
 vim.keymap.set("t", "<C-k>", "<C-\\><C-N><C-6>", {noremap = true, silent = true})
 vim.keymap.set("t", "<C-n>", "<C-\\><C-N>", {noremap = true, silent = true})
 vim.keymap.set("v", "<leader>b", ":VBox", {noremap = true}) -- set ve=all
-vim.keymap.set('n', '<leader>m', ":lua require('nabla').popup()<cr>", {noremap = true, silent = true})
 
-vim.keymap.set('n', '<leader>ff', ":Rg --files", { desc = 'Telescope find files' })
-vim.keymap.set('n', '<leader>fg', ":Rg", { desc = 'Telescope live grep' })
+vim.keymap.set('n', '<leader>fg', ":Rg<cr>")
+vim.keymap.set('n', '<leader>ff', ":Rgff<cr>")
+vim.keymap.set('n', '<leader>ft', function()
+	local root = vim.fs.root(0, {".git"})
+	require("myrg").rgcwd(root)
+end)
 
 vim.keymap.set({'n', 'v'}, 'J', "5j", {noremap = true, silent = true})
 vim.keymap.set({'n', 'v'}, 'K', "5k", {noremap = true, silent = true})
