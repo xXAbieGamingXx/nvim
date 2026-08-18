@@ -147,7 +147,7 @@ require("lazy").setup(
 		dap = require("dap")
 		dap.adapters.gdb = {
 			type = "executable",
-			command = "C:\\msys64\\mingw64\\bin\\gdb.exe",
+			command = "gdb",
 			args = { "--interpreter=dap", "--eval-command", "set print pretty on" }
 		}
 		dap.configurations.c = {
@@ -222,7 +222,7 @@ require("lazy").setup(
 	dependencies = { "nvim-lua/plenary.nvim" },
 	lazy = true,
 	command = {"AocGetPuzzleInput", "AocGetTodayPuzzleInput"},
-	opts = {session_filepath = "C:\\Users\\Macch\\AppData\\Local\\nvim-data\\aoc\\aoc.nvim\\lua\\aoc\\key.txt"}
+	opts = {session_filepath = "~/.config/aoc_key.txt"}
 },
 {
 	"barrettruth/canola.nvim",
@@ -367,7 +367,6 @@ require("lazy").setup(
 				"clangd",
 				"--background-index",
 				"--header-insertion=never",
-				"--query-driver=C:\\msys64\\mingw64\\bin\\*"
 			},
 			root_markers = { ".clangd", "compile_commands.json", "compile_flags.txt", ".git" }
 		})
@@ -384,10 +383,6 @@ require("lazy").setup(
 {
     "xXAbieGamingXx/myrg.nvim",
     cmd = {"Rg", "Rgcwd", "Rgff"},
-},
-{
-	dir = "C:\\Users\\Macch\\OneDrive\\Desktop\\s\\r-random\\myrg.nvim",
-	enabled = false,
 },
 {
 	"natecraddock/workspaces.nvim",
