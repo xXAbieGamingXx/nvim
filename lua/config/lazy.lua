@@ -283,8 +283,8 @@ require("lazy").setup(
 	opts = {
 		render_modes = { 'n', 'c', 't', 'i' },
 		latex = {
-			enabled = false,
-			converter = 'latex2text',
+			enabled = true,
+			position = "above",
 		},
 	},
 },
@@ -311,40 +311,11 @@ require("lazy").setup(
 	cmd = { "CsvViewEnable", "CsvViewDisable", "CsvViewToggle" },
 },
 {
-		"DamianVCechov/hexview.nvim",
-		config = function()
-				require("hexview").setup()
-		end,
-		cmd = {"Hex", "UnHex", "HexSet"},
-},
-{
-	"OXY2DEV/markview.nvim",
-	ft = "markdown",
-	lazy = false,
-	opts = {
-		html = {
-			enable = false,
-		},
-		latex = {
-			enable = true,
-		},
-		markdown = {
-			enable = false,
-		},
-		markdown_inline = {
-			enable = false,
-		},
-		preview = {
-			enable = true,
-			modes = {'n', 'i', 'v', 'c', 't'},
-		},
-		typst = {
-			enable = false,
-		},
-		yaml = {
-			enable = false,
-		}
-	}
+	'camerondixon0/hex-reader.nvim',
+	config = function()
+		require('hex_reader').setup()
+	end,
+	cmd = "Hex",
 },
 {
 	"sindrets/diffview.nvim",
@@ -450,6 +421,10 @@ vim.api.nvim_create_autocmd({ "VimEnter" }, { -- it bugs out the first time you 
 		vim.cmd("silent! Gitsigns toggle_signs")
 	end
 })
+
+vim.api.nvim_create_user_command("Hex", function()
+	require("hex-reader").toggle()
+end)
 
 vim.cmd("colorscheme onedark")
 
