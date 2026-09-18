@@ -1,0 +1,7 @@
+- gdb
+- qalc (libqalculate)
+- ripgrep
+- webdev font
+- clangd
+- xxd
+- libtexprintf

@@ -1,26 +1,7 @@
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not (vim.uv or vim.loop).fs_stat(lazypath) then
-	local lazyrepo = "https://github.com/folke/lazy.nvim.git"
-	local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
-	if vim.v.shell_error ~= 0 then
-		vim.api.nvim_echo({
-			{ "Failed to clone lazy.nvim:\n", "ErrorMsg" },
-			{ out, "WarningMsg" },
-			{ "\nPress any key to exit..." },
-		}, true, {})
-		vim.fn.getchar()
-		os.exit(1)
-	end
-end
-vim.opt.rtp:prepend(lazypath)
-
--- Make sure to setup `mapleader` and `maplocalleader` before
--- loading lazy.nvim so that mappings are correct.
--- This is also a good place to setup other settings (vim.opt)
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true, noremap = true }) -- this stops space from moving the cursor
--- Setup lazy.nvim
+
 require("lazy").setup(
 	{
 { "nvim-tree/nvim-web-devicons", lazy = true, opts = {} },
@@ -84,9 +65,9 @@ require("lazy").setup(
 {
 	"sontungexpt/witch-line",
 	dependencies = {
-			"nvim-tree/nvim-web-devicons",
+		"nvim-tree/nvim-web-devicons",
 	},
-	lazy = false, -- Almost component is lazy load by default. So you can set lazy to false
+	lazy = false,
 	config = function()
 		require("witch-line").setup({
 			statusline = {
@@ -124,21 +105,10 @@ require("lazy").setup(
 {"eandrju/cellular-automaton.nvim", cmd = "CellularAutomaton",},
 {"rktjmp/playtime.nvim", cmd = "Playtime",},
 {
-		'windwp/nvim-autopairs',
-		event = "InsertEnter",
-		config = true,
-		-- use opts = {} for passing setup options
-		-- this is equivalent to setup({}) function
-},
-{
 	"folke/todo-comments.nvim",
 	dependencies = { "nvim-lua/plenary.nvim" },
 	event = "BufEnter",
-	opts = {
-		-- your configuration comes here
-		-- or leave it empty to use the default settings
-		-- refer to the configuration section below
-	}
+	opts = {}
 },
 {
 	"mfussenegger/nvim-dap",
@@ -213,8 +183,8 @@ require("lazy").setup(
 		},
 	},
 	dependencies = {
-			"nvim-neotest/nvim-nio",
-			"theHamsta/nvim-dap-virtual-text",
+		"nvim-neotest/nvim-nio",
+		"theHamsta/nvim-dap-virtual-text",
 	},
 },
 {
@@ -286,6 +256,15 @@ require("lazy").setup(
 			enabled = true,
 			position = "above",
 		},
+		pipe_table = {
+			enabled = true,
+			
+			style = 'full',
+			
+			cell = 'padded',
+			
+			border_enabled = true,
+		},
 	},
 },
 {
@@ -322,38 +301,19 @@ require("lazy").setup(
 	cmd = "DiffviewOpen"
 },
 {
-	"swaits/scratch.nvim",
-	lazy = true,
-	cmd = {
-		"Scratch",
-		"ScratchSplit",
-	},
-	opts = {},
-},
-{
-	"neovim/nvim-lspconfig",
-	config = function()
-		vim.lsp.config("clangd", {
-			cmd = {
-				"clangd",
-				"--background-index",
-				"--header-insertion=never",
-			},
-			root_markers = { ".clangd", "compile_commands.json", "compile_flags.txt", ".git" }
-		})
-		vim.lsp.enable("clangd")
-	end,
-},
-{
 	"lewis6991/gitsigns.nvim",
 	config = function()
 		require("gitsigns").setup()
 	end,
 	cmd = "Gitsigns"
 },
+-- {
+-- 	"xXAbieGamingXx/myrg.nvim",
+-- 	cmd = {"Rg", "Rgcwd", "Rgff"},
+-- },
 {
-    "xXAbieGamingXx/myrg.nvim",
-    cmd = {"Rg", "Rgcwd", "Rgff"},
+	dir = "~/s/r-random/myrg.nvim",
+	cmd = {"Rg", "Rgcwd", "Rgff"},
 },
 {
 	"natecraddock/workspaces.nvim",
@@ -386,15 +346,6 @@ vim.api.nvim_create_autocmd("FileType", {
 	end
 })
 
-vim.api.nvim_create_autocmd("FileType", {
-	pattern = "qf",
-	callback = function(args)
-		pcall(vim.treesitter.stop, args.buf)
-	end,
-})
-
-in_spaces = false
-
 vim.api.nvim_create_autocmd("BufReadPost", {
 	pattern = "*",
 	callback = function()
@@ -409,12 +360,33 @@ vim.api.nvim_create_autocmd("BufReadPost", {
 	end,
 })
 
-vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
-	pattern = {"*.pio"},
-	callback = function()
-		vim.bo.filetype = "pioasm" -- idk why but this is the parsers filetype requirement
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "qf",
+	callback = function(args)
+		pcall(vim.treesitter.stop, args.buf)
 	end,
 })
+
+vim.filetype.add({
+	extension =  {
+		pio = "pioasm",
+	},
+})
+
+vim.lsp.config("clangd", {
+	cmd = {
+		"clangd",
+		"--background-index",
+		"--header-insertion=never",
+	},
+	filetypes = { "c", "h", "cc", "cpp", "hh", "hpp" },
+	root_markers = { ".clangd", "compile_commands.json", "compile_flags.txt", ".git" }
+})
+vim.lsp.enable("clangd")
+
+vim.api.nvim_create_user_command("Hex", function()
+	require("hex-reader").toggle()
+end)
 
 vim.api.nvim_create_autocmd({ "VimEnter" }, { -- it bugs out the first time you use it or something
 	callback = function()
@@ -422,26 +394,20 @@ vim.api.nvim_create_autocmd({ "VimEnter" }, { -- it bugs out the first time you 
 	end
 })
 
-vim.api.nvim_create_user_command("Hex", function()
-	require("hex-reader").toggle()
-end)
-
-vim.cmd("colorscheme onedark")
-
 vim.keymap.set("n", "<leader>c", function()
 	vim.cmd("Gitsigns toggle_signs")
 	vim.cmd("Gitsigns toggle_deleted")
 	vim.cmd("Gitsigns toggle_word_diff")
-	vim.cmd("Gitsigns change_base ORIGIN/main")
-	vim.cmd("Gitsigns change_base ORIGIN/master")
 end, {noremap = true, silent = true})
-vim.keymap.set("n", "<leader>v", ":vsplit<cr>", {noremap = true, silent = true,}) -- these do have very unintuitive keybindings if i need more <leader> things
-vim.keymap.set("n", "<leader>h", ":split<cr>", {noremap = true, silent = true})
+
+-- random
 vim.keymap.set({"n", "v"}, "<leader>o", ":Oil .<cr>", {noremap = true, silent = true})
 vim.keymap.set("t", "<C-k>", "<C-\\><C-N><C-6>", {noremap = true, silent = true})
 vim.keymap.set("t", "<C-n>", "<C-\\><C-N>", {noremap = true, silent = true})
-vim.keymap.set("v", "<leader>b", ":VBox", {noremap = true}) -- set ve=all
+vim.keymap.set("v", "<leader>b", ":VBox<cr>", {noremap = true})
+vim.keymap.set("i", "<C-c>", "<Esc>", {noremap = true}) -- C-c is supposedly more dangerous
 
+-- myrg
 vim.keymap.set('n', '<leader>fg', ":Rg<cr>")
 vim.keymap.set('n', '<leader>ff', ":Rgff<cr>")
 vim.keymap.set('n', '<leader>ft', function()
@@ -449,10 +415,24 @@ vim.keymap.set('n', '<leader>ft', function()
 	require("myrg").rgcwd(root)
 end)
 
+
+
+vim.keymap.set("i", "`", "``<Left>")
+vim.keymap.set("i", '"', '""<Left>')
+vim.keymap.set("i", "'", "''<Left>")
+vim.keymap.set("i", "(", "()<Left>")
+vim.keymap.set("i", "[", "[]<Left>")
+vim.keymap.set("i", "{", " {}<Left><cr><cr><Up><Tab>")
+vim.keymap.set("i", "}", "{}<Left>")
+
+
 vim.keymap.set({'n', 'v'}, 'J', "5j", {noremap = true, silent = true})
 vim.keymap.set({'n', 'v'}, 'K', "5k", {noremap = true, silent = true})
 vim.keymap.set({'n', 'v'}, 'L', "5l", {noremap = true, silent = true})
 vim.keymap.set({'n', 'v'}, 'H', "5h", {noremap = true, silent = true})
+
+
+vim.cmd("colorscheme onedark")
 
 
 local terms = {}
