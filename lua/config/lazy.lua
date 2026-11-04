@@ -190,7 +190,6 @@ require("lazy").setup(
 {
 	"xXAbieGamingXx/a",
 	dependencies = { "nvim-lua/plenary.nvim" },
-	lazy = true,
 	command = {"AocGetPuzzleInput", "AocGetTodayPuzzleInput"},
 	opts = {session_filepath = "~/.config/aoc_key.txt"}
 },
@@ -251,7 +250,7 @@ require("lazy").setup(
 	dependencies = {'nvim-tree/nvim-web-devicons' },
 	ft = "markdown",
 	opts = {
-		render_modes = { 'n', 'c', 't', 'i' },
+		render_modes = { 'n', 'c', 't', 'i', 'no' },
 		latex = {
 			enabled = true,
 			position = "above",
@@ -288,13 +287,6 @@ require("lazy").setup(
 		},
 	},
 	cmd = { "CsvViewEnable", "CsvViewDisable", "CsvViewToggle" },
-},
-{
-	'camerondixon0/hex-reader.nvim',
-	config = function()
-		require('hex_reader').setup()
-	end,
-	cmd = "Hex",
 },
 {
 	"sindrets/diffview.nvim",
@@ -370,6 +362,9 @@ vim.api.nvim_create_autocmd("FileType", {
 vim.filetype.add({
 	extension =  {
 		pio = "pioasm",
+		inc = "asm",
+		v = "systemverilog",
+		vh = "systemverilog",
 	},
 })
 
@@ -384,10 +379,6 @@ vim.lsp.config("clangd", {
 })
 vim.lsp.enable("clangd")
 
-vim.api.nvim_create_user_command("Hex", function()
-	require("hex-reader").toggle()
-end)
-
 vim.api.nvim_create_autocmd({ "VimEnter" }, { -- it bugs out the first time you use it or something
 	callback = function()
 		vim.cmd("silent! Gitsigns toggle_signs")
@@ -401,8 +392,7 @@ vim.keymap.set("n", "<leader>c", function()
 end, {noremap = true, silent = true})
 
 -- random
-vim.keymap.set({"n", "v"}, "<leader>o", ":Oil .<cr>", {noremap = true, silent = true})
-vim.keymap.set("t", "<C-k>", "<C-\\><C-N><C-6>", {noremap = true, silent = true})
+vim.keymap.set({"n", "v"}, "-", ":Oil .<cr>", {noremap = true, silent = true})
 vim.keymap.set("t", "<C-n>", "<C-\\><C-N>", {noremap = true, silent = true})
 vim.keymap.set("v", "<leader>b", ":VBox<cr>", {noremap = true})
 vim.keymap.set("i", "<C-c>", "<Esc>", {noremap = true}) -- C-c is supposedly more dangerous
@@ -416,10 +406,25 @@ vim.keymap.set('n', '<leader>ft', function()
 end)
 
 
-
-vim.keymap.set("i", "`", "``<Left>")
+vim.keymap.set("i", "`", function()
+	if vim.bo.filetype ~= "systemverilog" then
+		local keys = vim.api.nvim_replace_termcodes("``<Left>", true, false, true)
+		vim.api.nvim_feedkeys(keys, "n", true)
+	else
+		local keys = vim.api.nvim_replace_termcodes("`", true, false, true)
+		vim.api.nvim_feedkeys(keys, "n", true)
+	end
+end)
 vim.keymap.set("i", '"', '""<Left>')
-vim.keymap.set("i", "'", "''<Left>")
+vim.keymap.set("i", "'", function()
+	if vim.bo.filetype ~= "systemverilog" then
+		local keys = vim.api.nvim_replace_termcodes("''<Left>", true, false, true)
+		vim.api.nvim_feedkeys(keys, "n", true)
+	else
+		local keys = vim.api.nvim_replace_termcodes("'", true, false, true)
+		vim.api.nvim_feedkeys(keys, "n", true)
+	end
+end)
 vim.keymap.set("i", "(", "()<Left>")
 vim.keymap.set("i", "[", "[]<Left>")
 vim.keymap.set("i", "{", " {}<Left><cr><cr><Up><Tab>")
@@ -437,9 +442,13 @@ vim.cmd("colorscheme onedark")
 
 local terms = {}
 local index = 0
+local previous_buffer
 
 vim.keymap.set('n', '<leader>e', function()
 	if index < 10 then
+		if vim.bo.buftype ~= "terminal" then
+			previous_buffer = vim.api.nvim_get_current_buf()
+		end
 		vim.cmd("term")
 		terms[index] = vim.api.nvim_get_current_buf()
 
@@ -449,6 +458,9 @@ end, {noremap = true, silent = true})
 
 vim.keymap.set("n", "<leader>r", function()
 	if index >= 1 then
+		if vim.bo.buftype ~= "terminal" then
+			previous_buffer = vim.api.nvim_get_current_buf()
+		end
 		if vim.api.nvim_buf_is_valid(terms[0]) then
 			vim.cmd("b! "..terms[0])
 		else
@@ -470,6 +482,9 @@ vim.keymap.set("n", "<leader>w2", function()
 end, {noremap = true, silent = true})
 vim.keymap.set("n", "<leader>w3", function()
 	if index >= 3 then
+		if vim.bo.buftype ~= "terminal" then
+			previous_buffer = vim.api.nvim_get_current_buf()
+		end
 		if vim.api.nvim_buf_is_valid(terms[2]) then
 			vim.cmd("b! "..terms[2])
 		else
@@ -480,6 +495,9 @@ vim.keymap.set("n", "<leader>w3", function()
 end, {noremap = true, silent = true})
 vim.keymap.set("n", "<leader>w4", function()
 	if index >= 4 then
+		if vim.bo.buftype ~= "terminal" then
+			previous_buffer = vim.api.nvim_get_current_buf()
+		end
 		if vim.api.nvim_buf_is_valid(terms[3]) then
 			vim.cmd("b! "..terms[3])
 		else
@@ -490,6 +508,9 @@ vim.keymap.set("n", "<leader>w4", function()
 end, {noremap = true, silent = true})
 vim.keymap.set("n", "<leader>w5", function()
 	if index >= 5 then
+		if vim.bo.buftype ~= "terminal" then
+			previous_buffer = vim.api.nvim_get_current_buf()
+		end
 		if vim.api.nvim_buf_is_valid(terms[4]) then
 			vim.cmd("b! "..terms[4])
 		else
@@ -500,6 +521,9 @@ vim.keymap.set("n", "<leader>w5", function()
 end, {noremap = true, silent = true})
 vim.keymap.set("n", "<leader>w6", function()
 	if index >= 6 then
+		if vim.bo.buftype ~= "terminal" then
+			previous_buffer = vim.api.nvim_get_current_buf()
+		end
 		if vim.api.nvim_buf_is_valid(terms[5]) then
 			vim.cmd("b! "..terms[5])
 		else
@@ -510,6 +534,9 @@ vim.keymap.set("n", "<leader>w6", function()
 end, {noremap = true, silent = true})
 vim.keymap.set("n", "<leader>w7", function()
 	if index >= 7 then
+		if vim.bo.buftype ~= "terminal" then
+			previous_buffer = vim.api.nvim_get_current_buf()
+		end
 		if vim.api.nvim_buf_is_valid(terms[6]) then
 			vim.cmd("b! "..terms[6])
 		else
@@ -520,6 +547,9 @@ vim.keymap.set("n", "<leader>w7", function()
 end, {noremap = true, silent = true})
 vim.keymap.set("n", "<leader>w8", function()
 	if index >= 8 then
+		if vim.bo.buftype ~= "terminal" then
+			previous_buffer = vim.api.nvim_get_current_buf()
+		end
 		if vim.api.nvim_buf_is_valid(terms[7]) then
 			vim.cmd("b! "..terms[7])
 		else
@@ -530,6 +560,9 @@ vim.keymap.set("n", "<leader>w8", function()
 end, {noremap = true, silent = true})
 vim.keymap.set("n", "<leader>w9", function()
 	if index >= 9 then
+		if vim.bo.buftype ~= "terminal" then
+			previous_buffer = vim.api.nvim_get_current_buf()
+		end
 		if vim.api.nvim_buf_is_valid(terms[8]) then
 			vim.cmd("b! "..terms[8])
 		else
@@ -537,4 +570,9 @@ vim.keymap.set("n", "<leader>w9", function()
 			terms[8] = vim.api.nvim_get_current_buf()
 		end
 	end
+end, {noremap = true, silent = true})
+
+
+vim.keymap.set("t", "<C-k>", function()
+	vim.cmd("b! "..previous_buffer)
 end, {noremap = true, silent = true})
