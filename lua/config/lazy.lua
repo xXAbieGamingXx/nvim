@@ -4,60 +4,6 @@ vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true, noremap = true
 
 require("lazy").setup(
 	{
-{ "nvim-tree/nvim-web-devicons", lazy = true, opts = {} },
-{
-	"nvimdev/dashboard-nvim",
-	event = "VimEnter",
-	config = function()
-		require("dashboard").setup {
-			theme="doom",
-			config = {
-				header = {		
-    "                                                                              ",
-    "=================     ===============     ===============   ========  ========",
-    "\\\\ . . . . . . .\\\\   //. . . . . . .\\\\   //. . . . . . .\\\\  \\\\. . .\\\\// . . //",
-    "||. . ._____. . .|| ||. . ._____. . .|| ||. . ._____. . .|| || . . .\\/ . . .||",
-    "|| . .||   ||. . || || . .||   ||. . || || . .||   ||. . || ||. . . . . . . ||",
-    "||. . ||   || . .|| ||. . ||   || . .|| ||. . ||   || . .|| || . | . . . . .||",
-    "|| . .||   ||. _-|| ||-_ .||   ||. . || || . .||   ||. _-|| ||-_.|\\ . . . . ||",
-    "||. . ||   ||-'  || ||  `-||   || . .|| ||. . ||   ||-'  || ||  `|\\_ . .|. .||",
-    "|| . _||   ||    || ||    ||   ||_ . || || . _||   ||    || ||   |\\ `-_/| . ||",
-    "||_-' ||  .|/    || ||    \\|.  || `-_|| ||_-' ||  .|/    || ||   | \\  / |-_.||",
-    "||    ||_-'      || ||      `-_||    || ||    ||_-'      || ||   | \\  / |  `||",
-    "||    `'         || ||         `'    || ||    `'         || ||   | \\  / |   ||",
-    "||            .===' `===.         .==='.`===.         .===' /==. |  \\/  |   ||",
-    "||         .=='   \\_|-_ `===. .==='   _|_   `===. .===' _-|/   `==  \\/  |   ||",
-    "||      .=='    _-'    `-_  `='    _-'   `-_    `='  _-'   `-_  /|  \\/  |   ||",
-    "||   .=='    _-'          `-__\\._-'         `-_./__-'         `' |. /|  |   ||",
-    "||.=='    _-'                                                     `' |  /==.||",
-    "=='    _-'                        N E O V I M                         \\/   `==",
-    "\\   _-'                                                                `-_   /",
-    " `''                                                                      ``'  ",},
-      
-				center = {
-						{
-							icon = "  ",
-							desc = "Recent Projects",
-							key="r",
-							action = function()
-								vim.cmd("WorkspacesOpen")
-								vim.cmd("Oil")
-							end,
-						},
-						{
-							icon = "  ",
-							desc = "New File",
-							key="n",
-							action = "enew",
-						},
-						{ action = function() vim.api.nvim_input("<cmd>qa<cr>") end, desc = " Quit", icon = " ", key = "q" },
-						
-				},
-			},
-		}
-	end,
-	dependencies = { {"nvim-tree/nvim-web-devicons"}}
-},
 {
 	"olimorris/onedarkpro.nvim",
 	priority = 1000, -- Ensure it loads first
@@ -102,97 +48,6 @@ require("lazy").setup(
 		})
 	end,
 },
-{"eandrju/cellular-automaton.nvim", cmd = "CellularAutomaton",},
-{"rktjmp/playtime.nvim", cmd = "Playtime",},
-{
-	"folke/todo-comments.nvim",
-	dependencies = { "nvim-lua/plenary.nvim" },
-	event = "BufEnter",
-	opts = {}
-},
-{
-	"mfussenegger/nvim-dap",
-	ft = {"c", "cpp"},
-	config = function()
-		dap = require("dap")
-		dap.adapters.gdb = {
-			type = "executable",
-			command = "gdb",
-			args = { "--interpreter=dap", "--eval-command", "set print pretty on" }
-		}
-		dap.configurations.c = {
-			{
-			name = "Launch file (native)",
-			type = "gdb",
-			request = "launch",
-			program = function()
-				return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
-			end,
-			cwd = '${workspaceFolder}',
-			
-			stopAtBeginningOfMainSubprogram = true,
-			},
-		}
-	end,
-
-	keys = {
-		{
-			"<leader>b",
-			function() require("dap").toggle_breakpoint() end,
-			desc = "Toggle Breakpoint"
-		},
-		{
-			"<leader>t",
-			function() require("dap").terminate() end,
-			desc = "Terminate"
-		},
-	},
-},
-{
-	"theHamsta/nvim-dap-virtual-text",
-	ft = {"c", "cpp"},
-	config = true,
-	dependencies = {
-		"mfussenegger/nvim-dap",
-	},
-},
-{
-	"rcarriga/nvim-dap-ui",
-	ft = {"c", "cpp"},
-	config = function()
-		require("dapui").setup({
-			layouts = {
-				{
-					-- Only displays the console / terminal output window at the bottom
-					elements = {
-						{ id = "console", size = 1.0 } 
-					},
-					position = "bottom",
-					size = 15,
-				},
-			},
-		})
-	end,
-	keys = {
-		{
-			"<leader>du",
-			function()
-				require("dapui").toggle({})
-			end,
-			desc = "Dap UI"
-		},
-	},
-	dependencies = {
-		"nvim-neotest/nvim-nio",
-		"theHamsta/nvim-dap-virtual-text",
-	},
-},
-{
-	"xXAbieGamingXx/a",
-	dependencies = { "nvim-lua/plenary.nvim" },
-	command = {"AocGetPuzzleInput", "AocGetTodayPuzzleInput"},
-	opts = {session_filepath = "~/.config/aoc_key.txt"}
-},
 {
 	"barrettruth/canola.nvim",
 	cmd = "Oil",
@@ -222,7 +77,7 @@ require("lazy").setup(
 			use_default_keymaps = false
 		})
 	end,
-	dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if you prefer nvim-web-devicons
+	dependencies = { "nvim-tree/nvim-web-devicons" },
 },
 {
 	"romus204/tree-sitter-manager.nvim",
@@ -235,84 +90,8 @@ require("lazy").setup(
 	end
 },
 {
-	"Apeiros-46B/qalc.nvim",
-	cmd = {"Qalc", "QalcAttach"},
-	config = function()
-		require("qalc").setup({})
-	end,
-},
-{
-	"jbyuki/venn.nvim",
-	cmd = {"VBox"}
-},
-{
-	'MeanderingProgrammer/render-markdown.nvim',
-	dependencies = {'nvim-tree/nvim-web-devicons' },
-	ft = "markdown",
-	opts = {
-		render_modes = { 'n', 'c', 't', 'i', 'no' },
-		latex = {
-			enabled = true,
-			position = "above",
-		},
-		pipe_table = {
-			enabled = true,
-			
-			style = 'full',
-			
-			cell = 'padded',
-			
-			border_enabled = true,
-		},
-	},
-},
-{
-	"hat0uma/csvview.nvim",
-	---@module "csvview"
-	---@type CsvView.Options
-	opts = {
-		parser = { comments = { "#", "//" } },
-		keymaps = {
-			-- Text objects for selecting fields
-			textobject_field_inner = { "if", mode = { "o", "x" } },
-			textobject_field_outer = { "af", mode = { "o", "x" } },
-			-- Excel-like navigation:
-			-- Use <Tab> and <S-Tab> to move horizontally between fields.
-			-- Use <Enter> and <S-Enter> to move vertically between rows and place the cursor at the end of the field.
-			-- Note: In terminals, you may need to enable CSI-u mode to use <S-Tab> and <S-Enter>.
-			jump_next_field_end = { "<Tab>", mode = { "n", "v" } },
-			jump_prev_field_end = { "<S-Tab>", mode = { "n", "v" } },
-			jump_next_row = { "<Enter>", mode = { "n", "v" } },
-			jump_prev_row = { "<S-Enter>", mode = { "n", "v" } },
-		},
-	},
-	cmd = { "CsvViewEnable", "CsvViewDisable", "CsvViewToggle" },
-},
-{
-	"sindrets/diffview.nvim",
-	cmd = "DiffviewOpen"
-},
-{
-	"lewis6991/gitsigns.nvim",
-	config = function()
-		require("gitsigns").setup()
-	end,
-	cmd = "Gitsigns"
-},
--- {
--- 	"xXAbieGamingXx/myrg.nvim",
--- 	cmd = {"Rg", "Rgcwd", "Rgff"},
--- },
-{
-	dir = "~/s/r-random/myrg.nvim",
+	"xXAbieGamingXx/myrg.nvim",
 	cmd = {"Rg", "Rgcwd", "Rgff"},
-},
-{
-	"natecraddock/workspaces.nvim",
-	config = function()
-		require("workspaces").setup()
-	end,
-	cmd = {"WorkspacesAdd", "WorkspacesOpen"},
 },
 
 
@@ -359,42 +138,9 @@ vim.api.nvim_create_autocmd("FileType", {
 	end,
 })
 
-vim.filetype.add({
-	extension =  {
-		pio = "pioasm",
-		inc = "asm",
-		v = "systemverilog",
-		vh = "systemverilog",
-	},
-})
-
-vim.lsp.config("clangd", {
-	cmd = {
-		"clangd",
-		"--background-index",
-		"--header-insertion=never",
-	},
-	filetypes = { "c", "h", "cc", "cpp", "hh", "hpp" },
-	root_markers = { ".clangd", "compile_commands.json", "compile_flags.txt", ".git" }
-})
-vim.lsp.enable("clangd")
-
-vim.api.nvim_create_autocmd({ "VimEnter" }, { -- it bugs out the first time you use it or something
-	callback = function()
-		vim.cmd("silent! Gitsigns toggle_signs")
-	end
-})
-
-vim.keymap.set("n", "<leader>c", function()
-	vim.cmd("Gitsigns toggle_signs")
-	vim.cmd("Gitsigns toggle_deleted")
-	vim.cmd("Gitsigns toggle_word_diff")
-end, {noremap = true, silent = true})
-
 -- random
 vim.keymap.set({"n", "v"}, "-", ":Oil .<cr>", {noremap = true, silent = true})
 vim.keymap.set("t", "<C-n>", "<C-\\><C-N>", {noremap = true, silent = true})
-vim.keymap.set("v", "<leader>b", ":VBox<cr>", {noremap = true})
 vim.keymap.set("i", "<C-c>", "<Esc>", {noremap = true}) -- C-c is supposedly more dangerous
 
 -- myrg
