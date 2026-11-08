@@ -5,10 +5,6 @@ vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true, noremap = true
 require("lazy").setup(
 	{
 {
-	"olimorris/onedarkpro.nvim",
-	priority = 1000, -- Ensure it loads first
-},
-{
 	"sontungexpt/witch-line",
 	dependencies = {
 		"nvim-tree/nvim-web-devicons",
@@ -42,7 +38,6 @@ require("lazy").setup(
 				},
 			},
 			disabled = {
-				filetypes = { "TelescopePrompt", "TelescopeResults" },
 				buftypes = { "prompt" },
 			},
 		})
@@ -183,7 +178,7 @@ vim.keymap.set({'n', 'v'}, 'L', "5l", {noremap = true, silent = true})
 vim.keymap.set({'n', 'v'}, 'H', "5h", {noremap = true, silent = true})
 
 
-vim.cmd("colorscheme onedark")
+vim.cmd("colorscheme vaporwave")
 
 
 local terms = {}
